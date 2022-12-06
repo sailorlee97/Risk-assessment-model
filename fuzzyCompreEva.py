@@ -8,6 +8,8 @@
 """
 from scipy.io import loadmat
 import numpy as np
+import matplotlib.pyplot as plt
+from preprocess import datapreprocess
 
 class FuzzyComprehensiveEvaluation():
 
@@ -31,7 +33,13 @@ class FuzzyComprehensiveEvaluation():
     v = data1['v']
     tems = data1['tems']
 
-    return h,v,tems
+    # interpolate
+    datapre = datapreprocess()
+    newh = datapre.fix_four_dim(h)
+    newv = datapre.fix_three_dim(v)
+    newtems = datapre.fix_three_dim(tems)
+
+    return newh,newv,newtems
 
   def _list_add(self,v,h,tems):
     """
@@ -55,9 +63,9 @@ class FuzzyComprehensiveEvaluation():
     :return:
     """
     h, v, tems = self._load_mat()
-    temph = self._avg(h,axises=2)
+    # temph = self._avg(h,axises=2)
 
-    newh = temph[:,:,day]
+    newh = tems[:,:,day]
     v = v[:,:,day]
     tems = tems[:,:,day]
 
@@ -172,11 +180,16 @@ class FuzzyComprehensiveEvaluation():
 if __name__ == '__main__':
 
   #            h           V           c
-  standrad = [[0.59537902, 0.27635046, 0.12827052],
+  standrad = [[0.34454467, 0.10852477, 0.54693056],
               [0.42857143, 0.42857143, 0.14285714],
+              [0.59537902, 0.27635046, 0.12827052],
               [0.63370792, 0.19192062, 0.17437146],
-              [0.66941687, 0.24263692, 0.08794621],
-              [0.34454467, 0.10852477, 0.54693056]]
+              [0.66941687, 0.24263692, 0.08794621]]
   abc = FuzzyComprehensiveEvaluation(standrad)
-  scores = abc.get_scores(1)
-  print(scores)
+  scores = abc.get_scores(3)
+  fig, ax = plt.subplots()
+  im = ax.imshow(scores)
+  ax.set_title("Harvest of local farmers (in tons/year)")
+  fig.tight_layout()
+  plt.colorbar(im)
+  plt.show()
