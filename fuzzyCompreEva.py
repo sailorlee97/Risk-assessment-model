@@ -88,12 +88,12 @@ class FuzzyComprehensiveEvaluation():
     return narray
 
 
-  def judge_waves_standard(self,i):
+  def judge_stream(self,i):
     """
-    judge height of waves
+        judge height of stream
 
-    :param i: height
-    :return: risk factor of h
+    :param j: speed of stream
+    :return:risk factor of v
     """
     test = 0
     if (i >= 7.0):
@@ -108,13 +108,14 @@ class FuzzyComprehensiveEvaluation():
       test = self.standrad[4][0] * i
     return test
 
-  def judge_stream(self,j):
+  def judge_waves_standard(self,j):
     """
-        judge height of stream
+        judge height of waves
 
-    :param j: speed of stream
-    :return:risk factor of v
+        :param i: height
+        :return: risk factor of h
     """
+
     vtest = 0
     if j >= 2:
       vtest = self.standrad[0][1] * j
@@ -189,7 +190,7 @@ if __name__ == '__main__':
   scores = abc.get_scores(3)
   fig, ax = plt.subplots()
   im = ax.imshow(scores)
-  ax.set_title("Harvest of local farmers (in tons/year)")
+  ax.set_title("")
   fig.tight_layout()
   plt.colorbar(im)
   plt.show()
